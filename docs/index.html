@@ -1,0 +1,353 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Iowa corn / CF revenue</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fff;color:#141414;font:14px/1.58 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}main{overflow:hidden}.sheet{max-width:760px;margin:auto;padding:48px 34px 56px 54px}.row{position:relative}.row:before{content:attr(data-line);position:absolute;right:calc(100% + 15px);font-size:10px;line-height:2.2;color:#777}header,nav,.split{display:flex;align-items:baseline;justify-content:space-between;gap:1em;flex-wrap:wrap}header,nav,.micro,figcaption,footer{font-size:12px}h1{font:inherit;font-size:clamp(23px,4vw,38px);letter-spacing:-.065em;line-height:1.12;margin:0 0 16px}p{max-width:67ch;margin:12px 0 20px}h2,.error-heading{font:inherit;letter-spacing:.04em;text-transform:uppercase;font-size:13px;margin:0 0 22px}a,button,select{color:inherit}a{text-underline-offset:3px}nav{justify-content:flex-start;border-top:1px dashed #888;padding-top:12px;margin-top:26px}.night{color:#ecece7;background:#101110}.night .sheet{padding-top:36px}.night .row:before{color:#a2a39c}figure{margin:0}.chart{display:block;width:100%;height:auto;overflow:visible}select{font:inherit;border:0;border-bottom:1px solid;background:#101110;border-radius:0;cursor:pointer}option{color:white;background:black}table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}th,td{padding:6px 0;text-align:right}th:first-child,td:first-child{text-align:left}thead{border-bottom:1px dashed #888}th{font-weight:normal}.break{margin-top:36px;padding-top:22px;border-top:1px dashed #888}.num{font-variant-numeric:tabular-nums}.sources{line-height:2}button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid currentColor;outline-offset:3px}@media(max-width:520px){.sheet{padding:28px 16px 36px 35px}.row:before{right:calc(100% + 8px)}body{font-size:13px}table{font-size:11px}.split{gap:6px}h1{margin-top:0}}
+#shipment-map{width:100%;display:block}#map-towns text{font:16px monospace;paint-order:stroke;stroke:#fafaf8;stroke-width:4;stroke-linejoin:round}.map-controls{margin:18px 0 8px;display:flex;align-items:center;gap:12px}.map-controls button{background:white;border:1px solid;padding:4px 10px;font:inherit;cursor:pointer}.map-controls button:disabled{color:#888}.map-controls input{width:min(200px,40vw);accent-color:#111}#map-log{white-space:pre-line;min-height:3.4em}#shipments{margin-top:28px}#map-play{min-width:6ch}
+.ridge-figure{margin-top:26px}.ridge-figure h3{font:inherit;margin:0 0 8px}.ridge-keys{display:flex;gap:18px;flex-wrap:wrap;color:#d1d2cc;font-size:12px}.ridge-keys i{display:inline-block;width:20px;border-top:2px solid;vertical-align:middle;margin-right:6px}.ridge-keys .dashed{border-top-style:dashed;color:#a9aaa4}.ridge-figure figcaption{max-width:70ch}.ridge-figure svg{margin:6px 0}#weather-impact{margin-top:10px}
+.method-list{max-width:67ch;margin:22px 0}.method-list dt{margin:16px 0 3px;font-weight:600}.method-list dd{margin:0}.ridge-keys{color:#222}.ridge-keys .dashed{color:#62635f}#plot{cursor:pointer}
+</style><main><section class="sheet"><h1 class="row" data-line="01">Iowa corn / CF revenue</h1>
+<p class="row" data-line="02">I tested whether spring rain in Iowa could help estimate how much nitrogen fertilizer moves through the state and how much CF Industries reports in second-quarter sales.</p>
+<p class="row" data-line="03">For deliveries, I compared measured rainfall with January–June nitrogen volumes. For revenue, I used spring rain forecasts available in the historical archive and compared estimates built from fertilizer prices, weather and CF’s first-quarter shipments.</p>
+<p class="row" data-line="04">In both tests, I estimated each year using only earlier years to fit the model.</p>
+</section>
+<section class="night" id="annual"><div class="sheet"><h2 class="row" data-line="05">I. Annual estimates, 2022–2026</h2><div class="split row micro" data-line="06"><label>Model <select id="model"><option value="price_only">Price</option><option value="price_weather">Price + weather</option><option value="price_shipments">Price + shipments</option><option value="price_weather_shipments">Price + both</option></select></label><span>Q2 SALES / USD MILLIONS</span></div>
+<figure><svg class="chart" viewBox="0 0 630 238" id="plot" role="img" aria-label="Annual reported sales and selected model estimates, 2022 to 2026"></svg><figcaption>● Reported sales &nbsp; ··· Estimate &nbsp; Click or tap a year to inspect it.</figcaption></figure>
+<div class="split break row" data-line="07"><label>Year <select id="year"></select></label><output class="num" id="detail" aria-live="polite"></output></div>
+<p id="weather-impact" aria-live="polite"></p>
+
+<h3 class="row break error-heading" data-line="08">Mean absolute error</h3><table><caption style="text-align:left">USD millions, lower is better</caption><thead><tr><th>Model</th><th>2022–26</th></tr></thead><tbody><tr><td>Price</td><td>147.0</td></tr><tr><td>Price + weather</td><td>148.7</td></tr><tr><td>Price + shipments</td><td>113.4</td></tr><tr><td>Price + both</td><td>116.9</td></tr></tbody></table></div></section>
+<section class="sheet"><section id="method"><h2 class="row" data-line="09">Methods</h2><p>I estimated Iowa deliveries with the median of the previous three springs. I compared that baseline with two rain adjustments. One could move the estimate freely. The other kept it within those three springs’ delivery range. I scored all three on the same six years using the absolute error in tons.</p><p class="row" data-line="10">Each May 31 revenue estimate starts with CF’s previous Q2 sales, scaled by the year-over-year change in the April nitrogen fertilizer price index. The weather model adds spring rain probabilities from Ames, Cedar Rapids and Sioux City for April 1 through May 20.</p><dl class="method-list">
+<dt>Expanding-window validation</dt><dd>For each May 31 forecast, I refit on earlier years whose Q2 results CF had already filed. The training window grows by one year as I move through the chart.</dd>
+<dt>Standardization and ridge regression</dt><dd>I center the spring rain probability on its training average and divide by its training standard deviation. I fit one slope to the log ratio of reported sales to the price estimate. When the rain forecast equals its training average, the weather adjustment is zero. I use a ridge penalty of 1 every year to shrink the fitted slope.</dd>
+</dl>
+<figure class="ridge-figure" aria-labelledby="ridge-heading">
+<h3 id="ridge-heading">How ridge changes the weather adjustment</h3>
+<div id="ridge-graphic"><div class="ridge-keys"><span><i></i>Ridge fit</span><span><i class="dashed"></i>Same fit without penalty</span></div>
+<svg class="chart" viewBox="0 0 580 170" id="ridge-plot" role="img" aria-labelledby="ridge-heading ridge-note"></svg></div>
+<figcaption id="ridge-note"></figcaption></figure>
+<dl class="method-list">
+<dt>Feature ablation</dt><dd>I compare four estimates on the same years using price alone, price with weather, price with shipments, and price with both. The shipment adjustment multiplies the baseline by the square root of the year-over-year Q1 shipment ratio. Comparing each pair isolates what adding weather did to the forecast.</dd>
+<dt>Mean absolute error</dt><dd>The table averages the size of the miss in dollars. A forecast $10m too high counts the same as one $10m too low.</dd>
+<dt>Training-year influence</dt><dd>In a separate 2025 diagnostic, I removed one earlier year at a time and refit the phosphate-adjusted model. The resulting change in the 2025 estimate shows how much that forecast depended on each training year.</dd>
+</dl><p class="row" data-line="11">Iowa field corn motivates the question. CF reports company-wide sales across crops and regions. The historical forecasts have archived values, but their exact public release times are uncertain.</p><p class="row" data-line="12">All eleven outcomes had been examined during model development. The first prospective test is scheduled for May 31, 2027.</p><footer class="row break sources" data-line="13"><a href="https://mesonet.agron.iastate.edu/mos/">Iowa forecast archive</a> · <a href="https://alfred.stlouisfed.org/series?seid=WPU065201">Price vintages</a> · <a href="https://www.sec.gov/edgar/browse/?CIK=1324404">CF filings</a> · <a href="https://github.com/Patrickbateman-g/iowa-fertilizer-revenue-research/blob/main/research/research_audit/comparison.py">Model comparison code</a> · <a href="https://github.com/Patrickbateman-g/iowa-fertilizer-revenue-research/blob/main/research/analysis_phosphate_forecast_2025.py">2025 diagnostic</a></footer></section>
+<section id="nitrogen" class="break"><h2 class="row" data-line="14">II. Spring rain and Iowa nitrogen deliveries</h2>
+<figure><svg class="chart" viewBox="0 0 540 259" role="img" aria-labelledby="nitrogen-title nitrogen-desc">
+<title id="nitrogen-title">Iowa spring rainfall and nitrogen distribution, 2014–2024</title>
+<desc id="nitrogen-desc">Eleven annual observations. The fitted line slopes upward, with substantial scatter. The wettest spring, 2024, had about 500,000 tons of nitrogen distributed.</desc>
+<g fill="#282924" font-family="monospace" font-size="12"><text x="48" y="14">Jan–Jun deliveries (1,000 tons of nitrogen)</text>
+<path d="M48 190.0h448" stroke="#deded9"/><text x="40" y="194.0" text-anchor="end">400</text>
+<path d="M48 154.0h448" stroke="#deded9"/><text x="40" y="158.0" text-anchor="end">500</text>
+<path d="M48 118.0h448" stroke="#deded9"/><text x="40" y="122.0" text-anchor="end">600</text>
+<path d="M48 82.0h448" stroke="#deded9"/><text x="40" y="86.0" text-anchor="end">700</text>
+<path d="M48 46.0h448" stroke="#deded9"/><text x="40" y="50.0" text-anchor="end">800</text>
+<text x="48.0" y="228" text-anchor="middle">80</text>
+<text x="112.0" y="228" text-anchor="middle">100</text>
+<text x="176.0" y="228" text-anchor="middle">120</text>
+<text x="240.0" y="228" text-anchor="middle">140</text>
+<text x="304.0" y="228" text-anchor="middle">160</text>
+<text x="368.0" y="228" text-anchor="middle">180</text>
+<text x="432.0" y="228" text-anchor="middle">200</text>
+<text x="496.0" y="228" text-anchor="middle">220</text>
+<text x="272" y="252" text-anchor="middle">April 1–May 20 rainfall (mm)</text>
+<line stroke="#787972" stroke-dasharray="4 4" x1="65.18" y1="144.38" x2="486.19" y2="76.72"/>
+<g><title>2014 · 159.0 mm · 680,822 nitrogen tons</title><circle cx="300.75" cy="88.90" r="3.8"/><text x="307.75" y="82.90">2014</text></g>
+<g><title>2015 · 139.3 mm · 700,292 nitrogen tons</title><circle cx="237.81" cy="81.89" r="3.8"/><text x="225.81" y="71.89">2015</text></g>
+<g><title>2016 · 128.3 mm · 743,876 nitrogen tons</title><circle cx="202.63" cy="66.20" r="3.8"/><text x="209.63" y="60.20">2016</text></g>
+<g><title>2017 · 184.3 mm · 692,186 nitrogen tons</title><circle cx="381.76" cy="84.81" r="3.8"/><text x="388.76" y="78.81">2017</text></g>
+<g><title>2018 · 111.9 mm · 549,577 nitrogen tons</title><circle cx="150.21" cy="136.15" r="3.8"/><text x="157.21" y="130.15">2018</text></g>
+<g><title>2019 · 158.3 mm · 811,700 nitrogen tons</title><circle cx="298.60" cy="41.79" r="3.8"/><text x="305.60" y="35.79">2019</text></g>
+<g><title>2020 · 85.4 mm · 381,296 nitrogen tons</title><circle cx="65.18" cy="196.73" r="3.8"/><text x="72.18" y="190.73">2020</text></g>
+<g><title>2021 · 87.3 mm · 510,013 nitrogen tons</title><circle cx="71.39" cy="150.40" r="3.8"/><text x="68.39" y="141.40">2021</text></g>
+<g><title>2022 · 109.0 mm · 478,437 nitrogen tons</title><circle cx="140.70" cy="161.76" r="3.8"/><text x="148.70" y="175.76">2022</text></g>
+<g><title>2023 · 100.4 mm · 518,795 nitrogen tons</title><circle cx="113.25" cy="147.23" r="3.8"/><text x="120.25" y="140.23">2023</text></g>
+<g><title>2024 · 216.9 mm · 499,888 nitrogen tons</title><circle cx="486.19" cy="154.04" r="3.8"/><text x="453.19" y="171.04">2024</text></g>
+</g></svg><figcaption>Each dot is one year. The dashed line shows the fitted relationship across all 11 years (correlation +0.45).</figcaption></figure>
+<p>I averaged observed rainfall at three Iowa locations and counted the nitrogen in four fertilizer grades distributed statewide. The January–June totals include deliveries before the rain and sales across crops.</p>
+<p>I first estimated deliveries by averaging every earlier spring. I now use the median of the previous three springs. I sort those three delivery volumes and take the middle one. On the same six years (2019–2024), the average miss fell from <strong>159,101 to 92,005 tons</strong>, about 67,100 fewer tons per year (42.2%).</p>
+<figure id="delivery-range"><svg class="chart" viewBox="0 0 540 258" role="img" aria-labelledby="range-title range-desc">
+<title id="range-title">Three-spring nitrogen delivery estimates, 2019–2024</title>
+<desc id="range-desc">Each vertical bar spans deliveries in the preceding three springs. Its thick mark is the median estimate for the year below it.</desc>
+<g fill="#282924" font-family="monospace" font-size="12"><text x="45" y="15">Nitrogen deliveries (1,000 tons)</text>
+<path d="M45 200h474" stroke="#deded9"/><text x="37" y="204" text-anchor="end">400</text>
+<path d="M45 160h474" stroke="#deded9"/><text x="37" y="164" text-anchor="end">500</text>
+<path d="M45 120h474" stroke="#deded9"/><text x="37" y="124" text-anchor="end">600</text>
+<path d="M45 80h474" stroke="#deded9"/><text x="37" y="84" text-anchor="end">700</text>
+<path d="M45 40h474" stroke="#deded9"/><text x="37" y="44" text-anchor="end">800</text>
+<g><title>2019 estimate using 2016–2018: low 549,577, median 692,186, high 743,876 tons</title>
+<path d="M77 62.45V140.17 M66 62.45h22 M66 140.17h22" fill="none" stroke="#41423e" stroke-width="1.2"/>
+<path d="M51 83.13h52" stroke="#191a17" stroke-width="4.5"/>
+<text x="77" y="233" text-anchor="middle">2019</text></g>
+<g><title>2020 estimate using 2017–2019: low 549,577, median 692,186, high 811,700 tons</title>
+<path d="M159 35.32V140.17 M148 35.32h22 M148 140.17h22" fill="none" stroke="#41423e" stroke-width="1.2"/>
+<path d="M133 83.13h52" stroke="#191a17" stroke-width="4.5"/>
+<text x="159" y="233" text-anchor="middle">2020</text></g>
+<g><title>2021 estimate using 2018–2020: low 381,296, median 549,577, high 811,700 tons</title>
+<path d="M241 35.32V207.48 M230 35.32h22 M230 207.48h22" fill="none" stroke="#41423e" stroke-width="1.2"/>
+<path d="M215 140.17h52" stroke="#191a17" stroke-width="4.5"/>
+<text x="241" y="233" text-anchor="middle">2021</text></g>
+<g><title>2022 estimate using 2019–2021: low 381,296, median 510,013, high 811,700 tons</title>
+<path d="M323 35.32V207.48 M312 35.32h22 M312 207.48h22" fill="none" stroke="#41423e" stroke-width="1.2"/>
+<path d="M297 155.99h52" stroke="#191a17" stroke-width="4.5"/>
+<text x="323" y="233" text-anchor="middle">2022</text></g>
+<g><title>2023 estimate using 2020–2022: low 381,296, median 478,437, high 510,013 tons</title>
+<path d="M405 155.99V207.48 M394 155.99h22 M394 207.48h22" fill="none" stroke="#41423e" stroke-width="1.2"/>
+<path d="M379 168.63h52" stroke="#191a17" stroke-width="4.5"/>
+<text x="405" y="233" text-anchor="middle">2023</text></g>
+<g><title>2024 estimate using 2021–2023: low 478,437, median 510,013, high 518,795 tons</title>
+<path d="M487 152.48V168.63 M476 152.48h22 M476 168.63h22" fill="none" stroke="#41423e" stroke-width="1.2"/>
+<path d="M461 155.99h52" stroke="#191a17" stroke-width="4.5"/>
+<text x="487" y="233" text-anchor="middle">2024</text></g>
+<text x="283" y="255" text-anchor="middle">Forecast year</text></g></svg>
+<figcaption>Thick line = median estimate. Thin caps = lowest and highest deliveries in the previous three springs.</figcaption></figure>
+<p>Using the last three springs but keeping the mean gave an average miss of 112,972 tons. The original rain model missed by 144,072 tons. I chose the median after comparing these historical results, so its improvement still needs a test on new years.</p>
+<p id="median-rain">I also added spring rain to the three-year median, using the same rain adjustment as before. It helped in four of six years, but raised the average miss from <strong>92,005 to 137,610 tons</strong> (49.6%). In the wettest spring, 2024, the adjustment pushed the estimate to 908,319 tons. Iowa reported 499,888. I kept the median alone.</p>
+<p id="bounded-rain">In 2021, the dry spring pointed in the right direction, but the model cut 104,091 tons when a cut of 39,563 would have matched deliveries. In 2024, rain was 118 mm above the recent average and exceeded every earlier spring in the sample. Extending the earlier relationship that far added 398,306 tons to an estimate already close to the reported volume.</p>
+<p>I tested a rule that keeps the rain-adjusted estimate between the lowest and highest delivery volumes of the previous three springs. Only 2024 changed. The six-year average miss fell to <strong>72,689 tons</strong>, compared with 92,005 for the median alone. I chose the rule after seeing 2024, so I would test both on new years.</p>
+<details open><summary>Year-by-year delivery errors</summary><table><caption>Absolute miss in tons of nitrogen</caption><thead><tr><th>Year</th><th>Median</th><th>+ rain</th><th>+ limited rain</th></tr></thead><tbody><tr><td>2019</td><td>119,514</td><td>100,237</td><td>100,237</td></tr><tr><td>2020</td><td>310,890</td><td>206,820</td><td>206,820</td></tr><tr><td>2021</td><td>39,563</td><td>64,528</td><td>64,528</td></tr><tr><td>2022</td><td>31,576</td><td>27,231</td><td>27,231</td></tr><tr><td>2023</td><td>40,358</td><td>18,411</td><td>18,411</td></tr><tr><td>2024</td><td>10,125</td><td>408,431</td><td>18,907</td></tr></tbody></table></details>
+<p class="micro"><a href="https://iowaagriculture.gov/commercial-feed-and-fertilizer-bureau/commercial-fertilizer">Iowa distribution reports</a> · <a href="https://github.com/Patrickbateman-g/iowa-fertilizer-revenue-research/blob/main/research/iowa-nitrogen-volume.zip">Research data and analysis</a> · <a href="https://github.com/Patrickbateman-g/iowa-fertilizer-revenue-research/blob/main/research/iowa_delivery_estimates.py">Delivery estimate code</a></p></section>
+</section>
+<div class="sheet"><section id="shipments"><h2 class="row" data-line="15">III. Iowa shipment map</h2>
+<p>Simulated week, May 12–18. Each dot follows a fictional fertilizer delivery.</p>
+<figure><svg id="shipment-map" viewBox="80 32 680 415" role="img" aria-labelledby="map-title map-state">
+<title id="map-title">Iowa rain and fertilizer shipments</title><desc id="map-state"></desc>
+<defs><path id="ia-shape" d="M138.1 141.9 L137.9 148.1 L140.8 152.5 L146.4 158.0 L150.5 167.3 L150.8 167.9 L149.4 172.5 L150.7 173.4 L153.5 175.6 L159.1 179.0 L156.4 184.9 L156.8 193.5 L161.6 200.1 L163.0 202.0 L163.0 207.3 L162.9 207.8 L162.0 213.4 L168.9 219.7 L168.5 227.4 L172.8 230.3 L180.7 235.9 L178.4 243.5 L181.2 248.6 L182.9 251.6 L186.6 257.1 L184.6 265.4 L182.9 270.7 L182.6 271.7 L182.0 278.1 L184.3 284.2 L185.3 288.1 L191.8 286.2 L192.8 290.6 L193.7 294.9 L199.0 296.6 L198.6 304.2 L198.5 306.6 L198.7 312.2 L201.8 317.3 L200.0 322.0 L200.1 327.5 L200.1 328.3 L204.7 328.0 L204.3 331.1 L203.7 335.3 L204.1 340.1 L204.0 343.6 L203.9 347.8 L207.2 353.1 L206.4 358.6 L208.0 361.8 L208.7 363.1 L206.1 367.9 L206.7 375.1 L206.7 375.2 L201.9 380.7 L205.7 386.9 L211.2 390.4 L214.1 396.2 L212.6 398.3 L232.9 398.7 L246.7 398.9 L250.1 398.9 L261.7 399.1 L273.3 399.3 L286.7 399.5 L294.9 399.7 L311.3 399.9 L319.8 400.0 L325.3 400.0 L339.2 399.9 L346.1 399.9 L358.4 399.7 L364.9 399.6 L380.1 399.3 L385.9 399.2 L401.3 399.0 L404.8 399.0 L420.7 398.9 L423.2 398.9 L441.5 398.6 L444.8 398.5 L458.4 398.0 L478.1 397.8 L480.6 397.8 L484.8 397.6 L500.8 397.1 L509.8 396.9 L524.7 396.5 L545.3 395.9 L545.6 395.9 L563.9 395.0 L565.0 396.1 L567.7 399.0 L568.9 402.3 L573.5 403.7 L574.4 408.3 L578.3 412.8 L582.2 416.1 L584.0 419.7 L590.8 422.5 L594.9 420.1 L594.3 413.9 L595.3 407.0 L593.0 404.2 L594.8 398.6 L597.8 395.0 L605.8 392.1 L611.1 392.2 L611.2 392.1 L616.8 388.1 L617.0 384.9 L617.3 382.0 L619.3 375.6 L619.2 370.7 L623.4 365.2 L628.6 360.1 L631.5 355.2 L632.1 347.6 L631.5 341.7 L631.5 341.3 L631.0 336.8 L627.5 330.8 L623.7 330.4 L620.2 324.8 L617.4 320.6 L620.8 310.8 L620.9 310.7 L621.1 310.1 L621.7 306.7 L624.9 300.3 L630.2 299.6 L633.9 300.4 L638.9 297.4 L645.9 296.9 L653.3 296.7 L660.5 293.1 L664.6 289.5 L669.7 289.1 L674.2 288.6 L678.2 284.0 L682.7 282.1 L684.8 279.9 L685.0 272.1 L687.0 268.6 L687.2 264.7 L687.3 263.1 L692.7 258.7 L693.2 258.3 L698.6 254.9 L698.6 251.1 L700.0 246.5 L700.6 241.1 L700.7 240.2 L702.1 233.4 L700.4 229.1 L700.1 228.2 L700.3 220.5 L696.3 215.5 L690.9 212.5 L686.9 210.3 L684.9 209.2 L679.5 205.0 L676.8 200.4 L678.0 195.5 L675.5 191.2 L672.2 188.3 L669.3 185.8 L665.2 181.7 L663.0 180.6 L658.1 177.8 L658.4 173.5 L655.8 165.5 L653.4 159.7 L649.6 157.5 L640.2 155.2 L636.3 154.1 L632.4 153.0 L625.8 148.8 L621.2 142.3 L618.7 131.9 L615.3 127.3 L613.8 118.9 L613.5 117.5 L612.1 111.5 L612.1 106.7 L612.1 100.3 L615.6 95.7 L619.7 90.1 L622.3 86.4 L618.0 79.4 L613.9 76.9 L609.3 72.4 L610.0 68.9 L609.0 67.0 L607.1 63.3 L608.4 57.5 L584.6 57.5 L574.2 57.5 L563.8 57.5 L555.5 57.5 L533.4 57.5 L524.7 57.5 L501.2 57.6 L492.2 57.6 L492.2 57.6 L464.6 57.7 L451.2 57.7 L449.0 57.7 L433.4 57.7 L410.0 57.7 L403.1 57.7 L396.9 57.7 L368.8 57.6 L344.7 57.6 L332.3 57.5 L327.7 57.5 L291.9 57.5 L290.2 57.5 L286.7 57.5 L260.6 57.5 L245.5 57.5 L239.7 57.6 L236.9 57.6 L206.7 57.6 L204.4 57.6 L187.6 57.6 L175.0 57.6 L152.8 57.6 L140.1 57.6 L141.4 61.2 L140.5 65.3 L146.9 71.0 L146.6 75.5 L146.1 81.0 L141.9 82.0 L143.6 85.9 L144.1 87.1 L146.8 90.2 L150.9 90.2 L152.3 99.3 L154.0 102.7 L152.9 106.4 L152.4 108.2 L147.7 111.4 L149.4 115.5 L147.0 118.7 L148.7 120.8 L145.1 125.1 L145.2 126.7 L145.5 130.3 L142.0 136.2 L138.1 141.9 Z"/><clipPath id="ia-clip"><use href="#ia-shape"/></clipPath>
+<pattern id="ia-rain" width="16" height="16" patternUnits="userSpaceOnUse">
+<g stroke="#626b73" stroke-width="1.6"><path id="dash-a" d="M1 6l3-4"/><path id="dash-b" d="M9 6l3-4"/><path id="dash-c" d="M1 14l3-4"/><path id="dash-d" d="M9 14l3-4"/></g></pattern>
+</defs>
+<use href="#ia-shape" fill="#fafaf8" stroke="#212121" stroke-width="2"/>
+<g clip-path="url(#ia-clip)"><ellipse id="rain-previous" opacity="0" rx="98" ry="125" fill="url(#ia-rain)"/><ellipse id="rain-band" opacity="0" rx="98" ry="125" fill="url(#ia-rain)"/></g>
+<path id="forecast-cloud" opacity="0" aria-hidden="true" d="M-15 8a8 8 0 0 1-1-16 12 12 0 0 1 23-2 8 8 0 0 1 11 5 6.5 6.5 0 0 1-1 13Z" fill="#fafaf8" stroke="#505b64" stroke-width="2.2" stroke-linejoin="round"/>
+<g id="map-routes"></g><g id="map-towns"></g><g id="moving-loads"></g></svg><figcaption>Cloud = rain tomorrow &nbsp; Hatching = rain today &nbsp; ● = shipment</figcaption></figure>
+<div class="map-controls"><button id="map-play" type="button">Pause</button><label for="map-day">Day</label><input id="map-day" type="range" min="0" max="6" value="0" aria-valuetext="May 12"></div>
+<div id="map-log" class="micro"></div></section>
+<section id="conclusion" class="break"><h2 class="row" data-line="16">Conclusion</h2>
+<p>Spring rain helped estimate Iowa deliveries when I limited the adjustment to the range of the previous three springs. The average miss fell by 19,316 tons compared with the median alone. That gain depends on a rule I chose after seeing the 2024 overshoot. I would keep the median as the benchmark and test both estimates on new years.</p>
+<p>For CF’s company-wide revenue, adding Iowa rain forecasts raised the average miss from $147.0 million to $148.7 million in 2022–2026. Prices and first-quarter shipments together gave the smallest miss, $113.4 million. Iowa’s delivery figures cover one state, while CF sells across regions and crops. My next check is the May 31, 2027 revenue estimate, recorded before CF reports its Q2 sales.</p></section><nav class="row" data-line="17" aria-label="Research sections"><a href="#annual">Annual estimates</a><a href="#method">Methods</a><a href="#nitrogen">Deliveries</a><a href="#shipments">Map</a><a href="#conclusion">Conclusion</a><a href="https://github.com/Patrickbateman-g/iowa-fertilizer-revenue-research">GitHub ↗</a></nav>
+</div></main>
+<script>const data= {"2016":{"actual":1134.0,"filed":"2016-08-04","price_only":1111.8099046447248,"price_weather":1114.4101253812682,"price_shipments":1311.3420115021227,"price_weather_shipments":1314.4088835247262},"2017":{"actual":1124.0,"filed":"2017-08-03","price_only":1071.8686502177068,"price_weather":1071.4694224711877,"price_shipments":1160.0549344485057,"price_weather_shipments":1159.6228608756628},"2018":{"actual":1300.0,"filed":"2018-08-02","price_only":1126.6058732612055,"price_weather":1130.5945949557922,"price_shipments":1072.8514083476734,"price_weather_shipments":1076.6498136188593},"2019":{"actual":1502.0,"filed":"2019-08-01","price_only":1306.5075086638428,"price_weather":1297.9392797078424,"price_shipments":1273.2935989931927,"price_weather_shipments":1264.9431907390976},"2020":{"actual":1204.0,"filed":"2020-08-06","price_only":1287.1955104996377,"price_weather":1293.316819604252,"price_shipments":1378.5927778968621,"price_weather_shipments":1385.1487303175008},"2021":{"actual":1588.0,"filed":"2021-08-09","price_only":1470.7457627118645,"price_weather":1469.0542701814938,"price_shipments":1451.1644216604507,"price_weather_shipments":1449.4954494683757},"2022":{"actual":3389.0,"filed":"2022-08-02","price_only":3426.2178731969143,"price_weather":3425.8591060841704,"price_shipments":3448.665489624712,"price_weather_shipments":3448.3043719706916},"2023":{"actual":1775.0,"filed":"2023-08-03","price_only":1986.8947716515072,"price_weather":1974.3401562776808,"price_shipments":1967.6805825888257,"price_weather_shipments":1955.247376137527},"2024":{"actual":1572.0,"filed":"2024-08-08","price_only":1575.113545826842,"price_weather":1554.28979249736,"price_shipments":1573.202104998686,"price_weather_shipments":1552.4036218298313},"2025":{"actual":1890.0,"filed":"2025-08-07","price_only":1691.567814917191,"price_weather":1630.0606004675815,"price_shipments":1779.0443127953781,"price_weather_shipments":1714.3563593491724},"2026":{"actual":2222.0,"filed":"2026-08-06","price_only":2506.35493327886,"price_weather":2451.725018611283,"price_shipments":2424.6329415770447,"price_weather_shipments":2371.7842851717583}}, years=Object.keys(data).filter(y=>Number(y)>=2022 && Number(y)<=2026), model=document.querySelector('#model'), year=document.querySelector('#year'), plot=document.querySelector('#plot');year.replaceChildren(...years.map(y=>new Option(y,y)));year.value='2025';
+
+const weatherFits = {"2022":{"probability":24.686666666666667,"mean":27.65833333333333,"sd":4.059915274613133,"ridge":0.00014306627377847265,"plain":0.000154988463260012,"count":12},"2023":{"probability":20.933333333333334,"mean":27.429743589743588,"sd":3.9802053938193716,"ridge":0.003883616188491954,"plain":0.004182355895299027,"count":13},"2024":{"probability":24.179999999999996,"mean":26.965714285714284,"sd":4.184454873102829,"ridge":0.01999107701031855,"plain":0.021419011082484164,"count":14},"2025":{"probability":19.566666666666666,"mean":26.779999999999998,"sd":4.1018543232163776,"ridge":0.021061964845817824,"plain":0.02246609583553901,"count":15},"2026":{"probability":18.733333333333334,"mean":26.329166666666666,"sd":4.338478275847419,"ridge":0.012587125671259056,"plain":0.013373821025712747,"count":16}};
+const millions = amount => '$' + Math.abs(amount).toFixed(Math.abs(amount) < 1 ? 2 : 1) + 'm';
+
+function drawWeather(year, modelKey) {
+  const row = data[year];
+  const shipments = modelKey.includes('shipments');
+  const baseline = shipments ? row.price_shipments : row.price_only;
+  const estimate = shipments ? row.price_weather_shipments : row.price_weather;
+  const baselineName = shipments ? 'price + shipments' : 'price alone';
+  const shift = estimate - baseline;
+  const before = Math.abs(row.actual - baseline);
+  const after = Math.abs(row.actual - estimate);
+  const verdict = after < before ? 'narrowed' : after > before ? 'widened' : 'held steady';
+  document.querySelector('#weather-impact').textContent =
+    year + ' · Adding weather to ' + baselineName + (shift < 0 ? ' lowered' : ' raised') +
+    ' the estimate by ' + millions(shift) + '. The gap to reported sales ' + verdict +
+    ' (' + millions(before) + ' → ' + millions(after) + ').';
+
+  const fit = weatherFits[year];
+  const adjustment = (probability, slope) =>
+    baseline * Math.expm1(slope * (probability - fit.mean) / fit.sd);
+  const x = probability => 54 + (probability - 18) * 500 / 18;
+  const y = dollars => 76 - dollars * 0.52;
+  const visuallyFlat = [fit.ridge, fit.plain].every(slope =>
+    Math.abs(y(adjustment(36, slope)) - y(adjustment(18, slope))) < 1.8);
+  document.querySelector('#ridge-graphic').hidden = visuallyFlat;
+  if (visuallyFlat) {
+    const plain = adjustment(fit.probability, fit.plain);
+    const dollars = amount => '$' + (Math.round(Math.abs(amount) * 1000) * 1000).toLocaleString('en-US');
+    document.querySelector('#ridge-note').textContent = year + ' · At a ' + fit.probability.toFixed(1) +
+      '% rain forecast, the weather fit ' + (plain < 0 ? 'lowered' : 'raised') + ' the estimate by about ' +
+      dollars(plain) + ' with no penalty. With the model’s penalty of 1, the change was ' + dollars(shift) +
+      ', about ' + dollars(plain - shift) + ' closer to the baseline.';
+    return;
+  }
+  const curve = slope => Array.from({length: 37}, (_, i) => {
+    const prob = 18 + i / 2;
+    return x(prob) + ',' + y(adjustment(prob, slope));
+  }).join(' ');
+  const grid = [-100, 0, 100].map(value =>
+    '<path d="M54 '+y(value)+'h500" stroke="'+(value ? '#dfdfdb' : '#989a94')+'"/>'+
+    '<text x="47" y="'+(y(value)+4)+'" text-anchor="end">'+(value > 0 ? '+' : '')+value+'</text>'
+  ).join('');
+  const ticks = [18, 24, 30, 36].map(value =>
+    '<text x="'+x(value)+'" y="146" text-anchor="middle">'+value+'%</text>'
+  ).join('');
+  document.querySelector('#ridge-plot').innerHTML =
+    '<g font-family="monospace" font-size="12" fill="#444641">'+
+    '<text x="54" y="13">Change to estimate ($m)</text>'+grid+ticks+
+    '<text x="304" y="166" text-anchor="middle">Average forecast chance of rain</text></g>'+
+    '<polyline points="'+curve(fit.plain)+'" fill="none" stroke="#666863" stroke-width="1.6" stroke-dasharray="5 4"/>'+
+    '<polyline points="'+curve(fit.ridge)+'" fill="none" stroke="#181a17" stroke-width="1.8"/>'+
+    '<circle cx="'+x(fit.probability)+'" cy="'+y(shift)+'" r="4" fill="#181a17" stroke="#fff"/>';
+  document.querySelector('#ridge-note').textContent = 'The dot marks '+year+' at '+fit.probability.toFixed(1)+
+    '% average forecast chance of rain. Using '+fit.count+' earlier years, the ridge penalty shrank the weather adjustment from '+
+    millions(adjustment(fit.probability,fit.plain))+' to '+millions(shift)+' in magnitude.';
+}
+
+function draw() {
+  const key = model.value;
+  const selected = year.value;
+  const rows = years.map(y => data[y]);
+  const max = Math.ceil(Math.max(...rows.flatMap(row => [row.actual, row[key]])) / 1000) * 1000;
+  const spacing = 560 / (years.length - 1);
+  const x = i => 48 + i * spacing;
+  const y = value => 194 - value / max * 168;
+  let marks = '';
+  for (let v = 0; v <= max; v += 1000) {
+    marks += `<path d="M48 ${y(v)}h560" stroke="#50514e" stroke-dasharray="2 4"/><text x="40" y="${y(v)+4}" text-anchor="end">${v}</text>`;
+  }
+  for (const series of ['actual', key]) {
+    const points = rows.map((row, i) => x(i)+','+y(row[series])).join(' ');
+    const style = series === 'actual' ? 'stroke="#eee"' : 'stroke="#aaa" stroke-dasharray="4 5"';
+    marks += `<polyline fill="none" ${style} stroke-width="2" points="${points}"/>`;
+  }
+  let targets = '';
+  years.forEach((label,i) => {
+    const left = i === 0 ? 0 : x(i) - spacing/2;
+    const right = i === years.length-1 ? 630 : x(i) + spacing/2;
+    marks += `<circle cx="${x(i)}" cy="${y(data[label].actual)}" r="3" fill="#eee"/><text x="${x(i)}" y="218" text-anchor="middle">${label}</text>`;
+    targets += `<rect x="${left}" width="${right-left}" height="238" fill="transparent" data-year="${label}"/>`;
+  });
+  const selectedX = x(years.indexOf(selected));
+  marks += `<path d="M${selectedX} 18V195" stroke="#ddd" stroke-dasharray="2 3"/>`;
+  plot.innerHTML = '<g fill="#bdbeb9" font-family="monospace" font-size="11">'+marks+'</g>'+targets;
+  drawWeather(selected,key);
+  const row = data[selected];
+  const error = row[key] - row.actual;
+  document.querySelector('#detail').textContent = 'Reported '+row.actual.toFixed(1)+' / estimate '+row[key].toFixed(1)+' / error '+(error > 0 ? '+' : '')+error.toFixed(1);
+}
+plot.onclick = event => {
+  const selected = event.target.getAttribute('data-year');
+  if (selected && selected !== year.value) {
+    year.value = selected;
+    draw();
+  }
+};
+model.onchange = year.onchange = draw;
+draw();
+</script><script>
+(() => {
+  const towns = {
+    'Sioux City':[151,188], 'Ames':[425,224], 'Waterloo':[521,177],
+    'Cedar Rapids':[558,241], 'Des Moines':[421,273], 'Ottumwa':[527,335]
+  };
+  const week = [
+    [0,0,0,'Dry statewide', [['Sioux City','Ames',48]]],
+    [205,195,12,'Western Iowa', [['Des Moines','Ottumwa',24]]],
+    [360,210,22,'West-central Iowa', [['Sioux City','Ames',72],['Des Moines','Ottumwa',36]]],
+    [463,205,16,'Central Iowa', []],
+    [555,224,9,'Eastern Iowa', [['Ames','Waterloo',48]]],
+    [625,285,4,'East-central Iowa', [['Waterloo','Cedar Rapids',60]]],
+    [0,0,0,'Dry statewide', [['Des Moines','Ottumwa',48],['Ames','Cedar Rapids',24]]]
+  ];
+  const get = id => document.getElementById(id);
+  const slider = get('map-day');
+  get('map-towns').innerHTML = Object.entries(towns).map(([name,[x,y]]) => {
+    const left = name === 'Waterloo' || name === 'Ames';
+    return '<circle cx="'+x+'" cy="'+y+'" r="4"/><text x="'+(x+(left?-8:8))+'" y="'+(y-7)+'" text-anchor="'+(left?'end':'start')+'">'+name+'</text>';
+  }).join('');
+  const dayLength = 4800;
+  const toggle = get('map-play');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let playing = !reducedMotion.matches;
+  let elapsed = 0, lastTime = null, frame = null;
+  let markers = [];
+  const rain = get('rain-band');
+  const previousRain = get('rain-previous');
+  const rainDashes = ['dash-a', 'dash-b', 'dash-c', 'dash-d'].map(get);
+  let selectedDay = false;
+  const cloud = get('forecast-cloud');
+  let showCloud = false;
+
+  function paintRain() {
+    const i = Number(slider.value);
+    const wet = week[i][2] > 0;
+    const wasWet = week[(i + week.length - 1) % week.length][2] > 0;
+    const duration = wet && wasWet ? 1250 : 2200;
+    const t = selectedDay || reducedMotion.matches ? 1 : Math.min(elapsed / duration, 1);
+    const fade = t * t * (3 - 2 * t);
+    previousRain.setAttribute('opacity', wasWet ? 1 - fade : 0);
+    rain.setAttribute('opacity', wet ? fade : 0);
+    if (!wet && !wasWet) return;
+    const hiddenGroup = Math.floor(elapsed / 400) % rainDashes.length;
+    rainDashes.forEach((dash, group) => {
+      const hide = playing && !reducedMotion.matches && group === hiddenGroup;
+      dash.setAttribute('opacity', hide ? 0 : 1);
+    });
+  }
+
+  function renderDay() {
+    const i = Number(slider.value);
+    const [x, y, mm, area, loads] = week[i];
+    const previous = week[(i + week.length - 1) % week.length];
+    rain.setAttribute('cx', x);
+    rain.setAttribute('cy', y);
+    previousRain.setAttribute('cx', previous[0]);
+    previousRain.setAttribute('cy', previous[1]);
+    const tomorrow = week[i + 1];
+    showCloud = Boolean(tomorrow && tomorrow[2] > 0);
+    if (showCloud) cloud.setAttribute('transform', 'translate('+tomorrow[0]+' '+(tomorrow[1]+44)+')');
+    const forecast = showCloud ? 'Rain tomorrow in '+tomorrow[3]+'.' : tomorrow ? 'Dry tomorrow.' : 'End of simulated week.';
+    const svg = (tag, attrs) => {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+      for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, value);
+      return el;
+    };
+    get('map-routes').replaceChildren();
+    get('moving-loads').replaceChildren();
+    markers = loads.map(([from, to]) => {
+      const [x,y] = towns[from], [u,v] = towns[to];
+      get('map-routes').append(svg('line',{x1:x,y1:y,x2:u,y2:v,stroke:'#777','stroke-width':1,'stroke-dasharray':'2 5'}));
+      const dot = svg('g',{});
+      const pulse = svg('circle',{r:8,fill:'none',stroke:'#141414'});
+      dot.append(pulse,svg('circle',{r:5,fill:'#141414',stroke:'white','stroke-width':1.4}));
+      get('moving-loads').append(dot);
+      return {dot,pulse,x,y,u,v};
+    });
+    const date = 'May '+(12+i);
+    const weather = mm ? area+' / '+mm+' mm rain' : area+' / 0 mm';
+    const shipments = loads.length ? loads.map(([from,to,tons]) => from+' to '+to+' / '+tons+' short tons').join('; ') : 'No shipments';
+    get('map-log').textContent = date+' — '+weather+'\n'+shipments;
+    get('map-state').textContent = 'Simulated '+date+'. '+weather+'. '+forecast+' '+shipments;
+    slider.setAttribute('aria-valuetext',date);
+    paint();
+  }
+  function paint() {
+    paintRain();
+    const fade = selectedDay || reducedMotion.matches ? 1 : Math.min(1, elapsed / 250, (dayLength - elapsed) / 250);
+    cloud.setAttribute('opacity', showCloud ? fade : 0);
+    const t = Math.max(0, Math.min(1, (elapsed/dayLength - 0.06)/0.84));
+    const wave = (elapsed % 1200)/1200;
+    for (const {dot,pulse,x,y,u,v} of markers) {
+      dot.setAttribute('transform','translate('+(x+(u-x)*t)+' '+(y+(v-y)*t)+')');
+      pulse.setAttribute('r',6+7*wave);
+      pulse.setAttribute('opacity',0.65*(1-wave));
+    }
+  }
+  function tick(now) {
+    if (lastTime !== null) elapsed += now-lastTime;
+    lastTime = now;
+    if (elapsed >= dayLength) {
+      slider.value = (Number(slider.value)+Math.floor(elapsed/dayLength)) % week.length;
+      elapsed %= dayLength;
+      selectedDay = false;
+      renderDay();
+    } else paint();
+    frame = requestAnimationFrame(tick);
+  }
+  function sync() {
+    cancelAnimationFrame(frame);
+    lastTime = null;
+    toggle.textContent = playing ? 'Pause' : 'Play';
+    toggle.setAttribute('aria-label',toggle.textContent+' shipment simulation');
+    if (playing && !document.hidden) frame = requestAnimationFrame(tick);
+  }
+  toggle.onclick = () => { playing = !playing; sync(); };
+  slider.oninput = () => { selectedDay = true; elapsed = 0; playing = false; renderDay(); sync(); };
+  document.addEventListener('visibilitychange',sync);
+  reducedMotion.addEventListener('change',event => {
+    if (event.matches) { playing = false; paintRain(); sync(); }
+  });
+  renderDay();
+  sync();
+})();
+</script></html>
