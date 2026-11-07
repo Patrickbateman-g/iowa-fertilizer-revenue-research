@@ -1,0 +1,7 @@
+# Investigating the 2022 six-week fieldwork error
+
+Run analysis_fieldwork_2022_diagnostic.py after the six-week comparison in the Kaggle follow-up notebook. The code reconstructs the 2022 training fold and compares a post-hoc half-strength incremental adjustment on matching 2022–2026 years. The data, annual results and scores remain in the notebook. Historical outcomes had already been inspected; these are exploratory sensitivity checks, not prospective validation. The frozen 2027 protocol is unchanged.
+
+Iowa's [May 16, 2022 crop report](https://iowaagriculture.gov/news/weekly-crop-report-51622) described a productive week for planting after a delayed start, while the six-week summary averages earlier and later conditions. CF's [Q2 2022 filing](https://www.sec.gov/Archives/edgar/data/1324404/000132440422000022/cf-20220630.htm) identifies much higher selling prices as a large driver of company-wide sales; the disclosure came after May 31 and must not be used as a same-year prediction input. These are contextual explanations, not proof of the cause of the model's error or an individual's purchases.
+
+The reconstructed regression is based on six earlier years and two related weather features; coefficients can be unstable and an input outside the training range involves extrapolation. Previous-week report entries can incorporate revisions already available by the cutoff. Source provenance and the limitations of manual transcription remain documented in the prior six-week research.
