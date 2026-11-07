@@ -1,0 +1,31 @@
+# Data, results, credentials and generated notebook output
+data/
+output/
+outputs/
+results/
+iowa_corn_revenue/
+input_snapshot.json
+*.csv
+*.parquet
+*.jsonl
+.env
+.env.*
+!.env.example
+*.ipynb
+.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+.venv/
+
+# Explicitly include the reviewed publication artifacts.
+!public_research/
+!public_research/*.ipynb
+!public_research/results/
+!public_research/results/**/
+!public_research/results/**/*.csv
+!public_research/results/*.csv
+!public_research/results/**/*.jsonl
+!public_research/results/*.jsonl
+
+# Reviewed notebook relocated with the research source.
+!research/*.ipynb
