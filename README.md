@@ -2,7 +2,7 @@
 
 <a href="https://forecast-observatory-iowa-2026.humorouspixie2.chatgpt.site/#shipments"><strong><samp>EXPLORE THE REPORT ↗</samp></strong></a>
 
-<a href="https://forecast-observatory-iowa-2026.humorouspixie2.chatgpt.site/#shipments">
+<a href="https://forecast-observatory-iowa-2026.humorouspixie2.chatgpt.site/">
   <picture>
     <source media="(prefers-reduced-motion: reduce)" srcset="docs/fertilizer-deliveries.png">
     <img src="docs/fertilizer-deliveries.gif" alt="Fertilizer deliveries. Explore the report. Illustrative Iowa shipment simulation, May 12–18. Delivery markers move between cities, rain strokes fade and clouds indicate tomorrow’s rain. All movements and weather are fictional. Open the live report." width="760">
