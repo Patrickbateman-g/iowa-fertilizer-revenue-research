@@ -1,59 +1,6 @@
-<h1><samp>Iowa corn / CF revenue</samp></h1>
+# Can Iowa weather forecasts improve a fertilizer revenue nowcast?
 
-Can Iowa’s spring weather help estimate fertilizer deliveries and CF Industries’ revenue?
-
-<a href="https://forecast-observatory-iowa-2026.humorouspixie2.chatgpt.site/"><samp>OPEN THE INTERACTIVE REPORT ↗</samp></a>
-
----
-
-<details>
-<summary><samp>CF REVENUE · compare the models</samp></summary>
-
-I estimated second-quarter sales using prices, Iowa rain forecasts and CF’s first-quarter shipments. For 2022–2026, the average absolute error was:
-
-| Estimate | Average miss |
-| :--- | ---: |
-| Price | $147.0m |
-| Price + weather | $148.7m |
-| Price + shipments | **$113.4m** |
-| Price + weather + shipments | $116.9m |
-
-Weather raised the average error in both historical periods I examined. The shipment adjustment helped in 2022–2026 but performed worse in 2016–2021.
-
-[Choose a year in the live chart](https://forecast-observatory-iowa-2026.humorouspixie2.chatgpt.site/#annual)
-
-</details>
-
-<details>
-<summary><samp>IOWA DELIVERIES · follow the rain experiment</samp></summary>
-
-I compared observed spring rain with statewide January–June nitrogen deliveries. On the same six years, 2019–2024:
-
-| Estimate | Average miss in nitrogen tons |
-| :--- | ---: |
-| Historical average | 159,101 |
-| Previous three springs’ median | 92,005 |
-| Median + rain | 137,610 |
-| Median + rain, limited to the previous three springs’ range | **72,689** |
-
-The unrestricted rain adjustment overshot badly in 2024. Limiting it improved that year. I chose this rule after seeing the result, so the apparent gain still needs a test on new years. These delivery totals include sales before the rain and across crops.
-
-[Explore spring rain and deliveries](https://forecast-observatory-iowa-2026.humorouspixie2.chatgpt.site/#nitrogen)
-
-</details>
-
-<details>
-<summary><samp>METHODS · see how I tested it</samp></summary>
-
-I fitted each estimate using earlier years and compared the models on the same test years. The revenue weather model uses training-only standardization and ridge regression with a fixed penalty of 1. The delivery benchmark is the median of the previous three springs.
-
-I scored the estimates by their mean absolute error. All historical outcomes had already been examined during development. The planned May 31, 2027 revenue test records a prediction before CF reports its second-quarter sales.
-
-[Read the methods and inspect the ridge fit](https://forecast-observatory-iowa-2026.humorouspixie2.chatgpt.site/#method) · [Browse the code](research/)
-
-</details>
-
----
+[Open the live Iowa fertilizer research report](https://forecast-observatory-iowa-2026.humorouspixie2.chatgpt.site/)
 
 This research compares simple estimates of CF Industries' second-quarter company-wide net sales using information available by May 31. It focuses on Iowa's corn-growing season, but CF sells across many regions and markets. Company revenue is not a direct measure of Iowa fertilizer purchases, crop use, profit or stock returns.
 
