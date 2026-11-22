@@ -1,6 +1,19 @@
-# Can Iowa weather forecasts improve a fertilizer revenue nowcast?
+<h1><samp>Iowa corn / CF revenue</samp></h1>
 
-[Open the live Iowa fertilizer research report](https://forecast-observatory-iowa-2026.humorouspixie2.chatgpt.site/)
+<a href="https://forecast-observatory-iowa-2026.humorouspixie2.chatgpt.site/#shipments"><strong><samp>EXPLORE THE REPORT ↗</samp></strong></a>
+
+<a href="https://forecast-observatory-iowa-2026.humorouspixie2.chatgpt.site/#shipments">
+  <picture>
+    <source media="(prefers-reduced-motion: reduce)" srcset="docs/fertilizer-deliveries.png">
+    <img src="docs/fertilizer-deliveries.gif" alt="Fertilizer deliveries. Explore the report. Illustrative Iowa shipment simulation, May 12–18. Delivery markers move between cities, rain strokes fade and clouds indicate tomorrow’s rain. All movements and weather are fictional. Open the live report." width="760">
+  </picture>
+</a>
+
+<sub>Fictional weather and deliveries · click the map to explore the report</sub>
+
+---
+
+# Can Iowa weather forecasts improve a fertilizer revenue nowcast?
 
 This research compares simple estimates of CF Industries' second-quarter company-wide net sales using information available by May 31. It focuses on Iowa's corn-growing season, but CF sells across many regions and markets. Company revenue is not a direct measure of Iowa fertilizer purchases, crop use, profit or stock returns.
 
